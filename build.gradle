@@ -11,4 +11,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // https://mvnrepository.com/artifact/org.mariuszgromada.math/MathParser.org-mXparser
+    compile group: 'org.mariuszgromada.math', name: 'MathParser.org-mXparser', version: '4.4.2'
 }

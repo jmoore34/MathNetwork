@@ -11,27 +11,27 @@ public class Client {
             Socket socket = new Socket(host.getHostName(), Server.PORT);
             System.out.println("Connected to socket.");
             // sets up streams for communicating with the server
-            BufferedReader in = new BufferedReader(
+            BufferedReader streamFromClient = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(
-                    new OutputStreamWriter(socket.getOutputStream()));
+            PrintWriter streamToClient = new PrintWriter(
+                    new OutputStreamWriter(socket.getOutputStream()), true);
 
             // object for reading from/writing to console
             Scanner console = new Scanner(System.in);
 
             String msg;
-            out.println("jojo is best anime");
             do {
                 msg = console.nextLine();
-                out.println(msg);
-                String serverResponse = in.readLine();
+                streamToClient.println(msg);
+                String serverResponse = streamFromClient.readLine();
                 if (serverResponse == null) {
-                    System.out.println("null server response");
+                    System.out.println("Null server response");
                     break;
                 }
                 System.out.println("from server:" + serverResponse);
             } while (!msg.equals("END"));
 
+            System.out.println("Closing connection...");
             socket.close();
         } catch (Exception e) {
             System.out.println("ERROR: " + e.toString());

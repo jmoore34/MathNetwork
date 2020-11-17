@@ -1,3 +1,5 @@
+import org.mariuszgromada.math.mxparser.Expression;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -43,22 +45,23 @@ public class Server implements Runnable {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(this.clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(
-                    new OutputStreamWriter(this.clientSocket.getOutputStream()));
+                    new OutputStreamWriter(this.clientSocket.getOutputStream()), true);
 
-            System.out.println(in.readLine());
-            System.out.println(in.readLine());
-            System.out.println(in.readLine());
             while (true) {
                 String messageFromClient = in.readLine();
-                if (messageFromClient == "END")
+                if (messageFromClient.equals("END"))
                     break;
-                System.out.println("Recieved message from client: " + messageFromClient);
+                Expression expression = new Expression(messageFromClient);
 
-                out.println("did you really just tell me " + messageFromClient);
+                System.out.println("Recieved message from client: " + messageFromClient);
+                double answer = expression.calculate();
+                System.out.println("Answer: " + answer);
+
+                out.println(messageFromClient + " = " + answer);
             }
 
 
-
+            System.out.println("Closing connection with client with ip " + clientSocket.getInetAddress().toString());
             clientSocket.close();
         } catch (IOException e) {
             System.out.println(e);
